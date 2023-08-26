@@ -14,7 +14,6 @@
     "@ui-kitten/components": "5.3.1",
     "@ui-kitten/eva-icons": "5.3.1",
     "@ui-kitten/metro-config": "5.3.1",
-    "epubjs-rn": "^0.1.5",
     "react": "18.1.0",
     "react-native": "0.70.6",
     "react-native-pdf": "^6.7.1",

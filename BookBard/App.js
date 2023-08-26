@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Button } from 'react-native';
 import PDFView from 'react-native-pdf';
-import Epub from 'epubjs-rn';
 import Tts from 'react-native-tts';
 import { request, PERMISSIONS } from 'react-native-permissions';
 
@@ -32,11 +31,6 @@ const App = () => {
         source={{ uri: 'http://www.pdf995.com/samples/pdf.pdf', cache: true }}
         style={styles.pdfView}
       />
-      <Epub
-        src={"https://s3.amazonaws.com/epubjs/books/moby-dick/OPS/package.opf"}
-        flow={"paginated"}
-        style={styles.epubView}
-      />
       <Button title="Request Permission and Extract Text" onPress={requestStoragePermission} />
       <Button title="Read Text" onPress={handleReadText} />
     </View>
@@ -50,11 +44,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   pdfView: {
-    width: 300,
-    height: 400,
-    marginBottom: 20,
-  },
-  epubView: {
     width: 300,
     height: 400,
     marginBottom: 20,
