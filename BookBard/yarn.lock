@@ -6642,7 +6642,7 @@ react-is@^18.1.0:
   resolved "https://registry.npmjs.org/react-is/-/react-is-18.2.0.tgz"
   integrity sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==
 
-react-native-blob-util@>=0.13.7:
+react-native-blob-util@^0.19.1, react-native-blob-util@>=0.13.7:
   version "0.19.1"
   resolved "https://registry.npmjs.org/react-native-blob-util/-/react-native-blob-util-0.19.1.tgz"
   integrity sha512-X1+MAcijR1AEky9dqNTFtsKvUPAoof2qsmmbSYThj/RWIucc2hhzrK3V2BJVU/hemNuz7E0NDaErmpNDpDHtNw==
