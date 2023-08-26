@@ -1,57 +1,47 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the UI Kitten template
- * https://github.com/akveo/react-native-ui-kitten
- *
- * Documentation: https://akveo.github.io/react-native-ui-kitten/docs
- *
- * @format
- */
+import React, { useState } from 'react';
+import { StyleSheet, View, Button } from 'react-native';
+import PDFView from 'react-native-pdf';
+import Epub from 'epubjs-rn';
+import Tts from 'react-native-tts';
+import { request, PERMISSIONS } from 'react-native-permissions';
 
-import React from 'react';
-import { StyleSheet } from 'react-native';
-import {
-  ApplicationProvider,
-  Button,
-  Icon,
-  IconRegistry,
-  Layout,
-  Text,
-} from '@ui-kitten/components';
-import { EvaIconsPack } from '@ui-kitten/eva-icons';
-import * as eva from '@eva-design/eva';
+const App = () => {
+  const [textToRead, setTextToRead] = useState('');
 
-/**
- * Use any valid `name` property from eva icons (e.g `github`, or `heart-outline`)
- * https://akveo.github.io/eva-icons
- */
-const HeartIcon = (props) => (
-  <Icon {...props} name='heart'/>
-);
+  // Dummy function to extract text from PDF/EPUB (you'll need a real method to extract text)
+  const extractTextFromDocument = () => {
+    // Extract text from your document
+    const extractedText = "This is a sample text from the document.";
+    setTextToRead(extractedText);
+  };
 
-export default () => (
-  <>
-    <IconRegistry icons={EvaIconsPack}/>
-    <ApplicationProvider {...eva} theme={eva.light}>
-      <Layout style={styles.container}>
-        <Text style={styles.text} category='h1'>
-          Welcome to UI Kitten 😻
-        </Text>
-        <Text style={styles.text} category='s1'>
-          Start with editing App.js to configure your App
-        </Text>
-        <Text style={styles.text} appearance='hint'>
-          For example, try changing theme to Dark by using eva.dark
-        </Text>
-        <Button style={styles.likeButton} accessoryLeft={HeartIcon}>
-          LIKE
-        </Button>
-      </Layout>
-    </ApplicationProvider>
-  </>
-);
+  const handleReadText = () => {
+    Tts.speak(textToRead);
+  };
+
+  const requestStoragePermission = async () => {
+    const response = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
+    if (response === 'granted') {
+      extractTextFromDocument();
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      <PDFView
+        source={{ uri: 'http://www.pdf995.com/samples/pdf.pdf', cache: true }}
+        style={styles.pdfView}
+      />
+      <Epub
+        src={"https://s3.amazonaws.com/epubjs/books/moby-dick/OPS/package.opf"}
+        flow={"paginated"}
+        style={styles.epubView}
+      />
+      <Button title="Request Permission and Extract Text" onPress={requestStoragePermission} />
+      <Button title="Read Text" onPress={handleReadText} />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -59,10 +49,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  text: {
-    textAlign: 'center',
+  pdfView: {
+    width: 300,
+    height: 400,
+    marginBottom: 20,
   },
-  likeButton: {
-    marginVertical: 16,
+  epubView: {
+    width: 300,
+    height: 400,
+    marginBottom: 20,
   },
 });
+
+export default App;
