@@ -134,6 +134,10 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
+        packagingOptions {
+        pickFirst '**/libc++_shared.so'
+    }
+
     defaultConfig {
         applicationId "com.bookbard"
         minSdkVersion rootProject.ext.minSdkVersion

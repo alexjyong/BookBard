@@ -48,7 +48,4 @@ allprojects {
         google()
         maven { url 'https://www.jitpack.io' }
     }
-    packagingOptions {
-        pickFirst '**/libc++_shared.so'
-    }
 }
