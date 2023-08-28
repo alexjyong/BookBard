@@ -19,8 +19,8 @@ const App = () => {
       const result = await DocumentPicker.pick({
         type: [DocumentPicker.types.pdf],
       });
-      // Use result.path (if available) or result.uri
-      const filePath = result[0].path || result[0].uri;
+      // Use result.uri
+      const filePath = result.uri;
       setPdfUri(filePath); // Set the selected PDF's file path to state
       addLog(`Selected PDF from: ${filePath}`);
       addLog(`Result object contains: ${JSON.stringify(result, null, 2)}`);
@@ -68,9 +68,12 @@ const App = () => {
       <Button title="Request Permission and Extract Text" onPress={requestStoragePermission} />
       <Button title="Read Text" onPress={handleReadText} />
       <ScrollView style={styles.logView}>
-        {logs.map((log, index) => (
-          <Text key={index}>{log}</Text>
-        ))}
+        <TextInput
+          style={{ height: '100%' }}
+          multiline={true}
+          editable={false}
+          value={logs.join('\n')}
+        />
       </ScrollView>
     </View>
   );
