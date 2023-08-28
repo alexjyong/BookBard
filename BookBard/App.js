@@ -7,14 +7,14 @@ import DocumentPicker from 'react-native-document-picker';
 
 const App = () => {
   const [textToRead, setTextToRead] = useState('');
+  const [pdfUri, setPdfUri] = useState(null); // State to hold the selected PDF's URI
 
   const selectPDFFile = async () => {
     try {
       const result = await DocumentPicker.pick({
         type: [DocumentPicker.types.pdf],
       });
-      // Use result.uri to load the PDF in your PDFView
-      // You might need to handle the file path properly depending on the platform
+      setPdfUri(result.uri); // Set the selected PDF's URI to state
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         // User cancelled the picker
@@ -44,10 +44,13 @@ const App = () => {
 
   return (
     <View style={styles.container}>
-      <PDFView
-        source={{ uri: 'http://www.pdf995.com/samples/pdf.pdf', cache: true }}
-        style={styles.pdfView}
-      />
+      <Button title="Select PDF" onPress={selectPDFFile} />
+      {pdfUri && (
+        <PDFView
+          source={{ uri: pdfUri, cache: true }}
+          style={styles.pdfView}
+        />
+      )}
       <Button title="Request Permission and Extract Text" onPress={requestStoragePermission} />
       <Button title="Read Text" onPress={handleReadText} />
     </View>

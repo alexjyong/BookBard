@@ -38,7 +38,8 @@ jobs:
         ./gradlew assembleRelease
 
     - name: Upload APK
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: app-release.apk
         path: BookBard/android/app/build/outputs/apk/release/app-release.apk
+        retention-days: 3
