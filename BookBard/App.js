@@ -20,7 +20,7 @@ const App = () => {
         type: [DocumentPicker.types.pdf],
       });
       // Use result.path (if available) or result.uri
-      const filePath = result.path || result.uri;
+      const filePath = result[0].path || result[0].uri;
       setPdfUri(filePath); // Set the selected PDF's file path to state
       addLog(`Selected PDF from: ${filePath}`);
       addLog(`Result object contains: ${JSON.stringify(result, null, 2)}`);
