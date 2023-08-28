@@ -3,11 +3,28 @@ import { StyleSheet, View, Button } from 'react-native';
 import PDFView from 'react-native-pdf';
 import Tts from 'react-native-tts';
 import { request, PERMISSIONS } from 'react-native-permissions';
+import DocumentPicker from 'react-native-document-picker';
 
 const App = () => {
   const [textToRead, setTextToRead] = useState('');
 
-  // Dummy function to extract text from PDF/EPUB (you'll need a real method to extract text)
+  const selectPDFFile = async () => {
+    try {
+      const result = await DocumentPicker.pick({
+        type: [DocumentPicker.types.pdf],
+      });
+      // Use result.uri to load the PDF in your PDFView
+      // You might need to handle the file path properly depending on the platform
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+        // User cancelled the picker
+      } else {
+        throw err;
+      }
+    }
+  };
+
+  // Dummy function to extract text from PDF (you'll need a real method to extract text)
   const extractTextFromDocument = () => {
     // Extract text from your document
     const extractedText = "This is a sample text from the document.";
