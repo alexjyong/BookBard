@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Button } from 'react-native';
+import { StyleSheet, View, Button, Text, ScrollView } from 'react-native';
 import PDFView from 'react-native-pdf';
 import Tts from 'react-native-tts';
 import { request, PERMISSIONS } from 'react-native-permissions';
@@ -8,17 +8,26 @@ import DocumentPicker from 'react-native-document-picker';
 const App = () => {
   const [textToRead, setTextToRead] = useState('');
   const [pdfUri, setPdfUri] = useState(null); // State to hold the selected PDF's URI
+  const [logs, setLogs] = useState([]); // State to hold logs
+
+  const addLog = (message) => {
+    setLogs((prevLogs) => [...prevLogs, message]);
+  };
 
   const selectPDFFile = async () => {
     try {
       const result = await DocumentPicker.pick({
         type: [DocumentPicker.types.pdf],
       });
-      setPdfUri(result.uri); // Set the selected PDF's URI to state
+      // Use result.path (if available) or result.uri
+      const filePath = result.path || result.uri;
+      setPdfUri(filePath); // Set the selected PDF's file path to state
+      addLog(`Selected PDF from: ${filePath}`);
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
-        // User cancelled the picker
+        addLog('PDF selection was cancelled.');
       } else {
+        addLog(`Error selecting PDF: ${err.message}`);
         throw err;
       }
     }
@@ -29,16 +38,20 @@ const App = () => {
     // Extract text from your document
     const extractedText = "This is a sample text from the document.";
     setTextToRead(extractedText);
+    addLog('Extracted text from the document.');
   };
 
   const handleReadText = () => {
     Tts.speak(textToRead);
+    addLog('Started reading the text.');
   };
 
   const requestStoragePermission = async () => {
     const response = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
     if (response === 'granted') {
       extractTextFromDocument();
+    } else {
+      addLog('Storage permission was denied.');
     }
   };
 
@@ -53,6 +66,11 @@ const App = () => {
       )}
       <Button title="Request Permission and Extract Text" onPress={requestStoragePermission} />
       <Button title="Read Text" onPress={handleReadText} />
+      <ScrollView style={styles.logView}>
+        {logs.map((log, index) => (
+          <Text key={index}>{log}</Text>
+        ))}
+      </ScrollView>
     </View>
   );
 };
@@ -67,6 +85,14 @@ const styles = StyleSheet.create({
     width: 300,
     height: 400,
     marginBottom: 20,
+  },
+  logView: {
+    marginTop: 20,
+    width: '80%',
+    height: 100,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 10,
   },
 });
 
