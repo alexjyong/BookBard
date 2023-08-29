@@ -50,10 +50,11 @@ const App = () => {
         type: [DocumentPicker.types.pdf],
       });
       const filePath = result.uri;
-      takePersistablePermission(filePath);
-      setPdfUri(filePath);
       addLog(`Selected PDF from: ${filePath}`);
       addLog(`Result object contains: ${JSON.stringify(result, null, 2)}`);
+      takePersistablePermission(filePath);
+      setPdfUri(filePath);
+      
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         addLog('PDF selection was cancelled.');
