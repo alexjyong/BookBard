@@ -5,6 +5,28 @@ import Tts from 'react-native-tts';
 import { request, PERMISSIONS } from 'react-native-permissions';
 import DocumentPicker from 'react-native-document-picker';
 
+class ErrorBoundary extends React.Component {
+  state = { hasError: false, error: null, errorInfo: null };
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    this.setState({ errorInfo });
+    this.props.addLog(`Error occurred: ${error.toString()}`);
+    this.props.addLog(`Error details: ${errorInfo.componentStack}`);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <Text>Error occurred. Check logs for details.</Text>;
+    }
+
+    return this.props.children;
+  }
+}
+
 const App = () => {
   const [textToRead, setTextToRead] = useState('');
   const [pdfUri, setPdfUri] = useState(null); // State to hold the selected PDF's URI
@@ -60,28 +82,6 @@ const App = () => {
     }
   };
 
-  class ErrorBoundary extends React.Component {
-    state = { hasError: false, error: null, errorInfo: null };
-  
-    static getDerivedStateFromError(error) {
-      return { hasError: true, error };
-    }
-  
-    componentDidCatch(error, errorInfo) {
-      this.setState({ errorInfo });
-      this.props.addLog(`Error occurred: ${error.toString()}`);
-      this.props.addLog(`Error details: ${errorInfo.componentStack}`);
-    }
-  
-    render() {
-      if (this.state.hasError) {
-        return <Text>Error occurred. Check logs for details.</Text>;
-      }
-  
-      return this.props.children;
-    }
-  }
-
   return (
     <ErrorBoundary addLog={addLog}>
       <View style={styles.container}>
@@ -111,6 +111,7 @@ const App = () => {
       </View>
     </ErrorBoundary>
   );
+}
 
 const styles = StyleSheet.create({
   container: {
