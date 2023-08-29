@@ -22,7 +22,7 @@ const App = () => {
       // Use result.uri
       
       const filePath = JSON.stringify(result[0].uri);
-      setPdfUri(filePath); // Set the selected PDF's file path to state
+      setPdfUri("http://samples.leanpub.com/thereactnativebook-sample.pdf"); // Set the selected PDF's file path to state
       addLog(`Selected PDF from: ${filePath}`);
       addLog(`Result object contains: ${JSON.stringify(result, null, 2)}`);
     } catch (err) {
