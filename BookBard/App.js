@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, View, Button, Text, ScrollView, Clipboard, Platform } from 'react-native';
+import { StyleSheet, View, Button, Text, ScrollView, TextInput } from 'react-native';
 import PDFView from 'react-native-pdf';
 import Tts from 'react-native-tts';
 import { request, PERMISSIONS } from 'react-native-permissions';
 import DocumentPicker from 'react-native-document-picker';
+import RNFS from 'react-native-fs';
 
 class ErrorBoundary extends React.Component {
   state = { hasError: false, error: null, errorInfo: null };
@@ -27,8 +28,17 @@ class ErrorBoundary extends React.Component {
   }
 }
 
+const uriToBase64 = async (uri) => {
+  try {
+    const fileContent = await RNFS.readFile(uri, 'base64');
+    return `data:application/pdf;base64,${fileContent}`;
+  } catch (error) {
+    console.error("Failed to convert URI to base64", error);
+    return null;
+  }
+};
+
 const App = () => {
-  const [textToRead, setTextToRead] = useState('');
   const [pdfUri, setPdfUri] = useState(null);
   const [logs, setLogs] = useState([]);
 
@@ -36,25 +46,14 @@ const App = () => {
     setLogs((prevLogs) => [...prevLogs, message]);
   };
 
-  const takePersistablePermission = (uri) => {
-    if (Platform.OS === 'android') {
-      const contentResolver = android.content.Context.getContentResolver();
-      const takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION;
-      contentResolver.takePersistableUriPermission(uri, takeFlags);
-    }
-  };
-
   const selectPDFFile = async () => {
     try {
       const result = await DocumentPicker.pickSingle({
         type: [DocumentPicker.types.pdf],
       });
-      const filePath = result.uri;
-      addLog(`Selected PDF from: ${filePath}`);
-      addLog(`Result object contains: ${JSON.stringify(result, null, 2)}`);
-      takePersistablePermission(filePath);
-      setPdfUri(filePath);
-      
+      const base64String = await uriToBase64(result.uri);
+      setPdfUri(base64String);
+      addLog(`Selected PDF from: ${result.uri}`);
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         addLog('PDF selection was cancelled.');
@@ -62,33 +61,6 @@ const App = () => {
         addLog(`Error selecting PDF: ${err.message}`);
         throw err;
       }
-    }
-  };
-
-  const copyLogsToClipboard = () => {
-    Clipboard.setString(logs.join('\n'));
-    addLog('Logs copied to clipboard.');
-  };
-
-  // Dummy function to extract text from PDF (you'll need a real method to extract text)
-  const extractTextFromDocument = () => {
-    // Extract text from your document
-    const extractedText = "This is a sample text from the document.";
-    setTextToRead(extractedText);
-    addLog('Extracted text from the document.');
-  };
-
-  const handleReadText = () => {
-    Tts.speak(textToRead);
-    addLog('Started reading the text.');
-  };
-
-  const requestStoragePermission = async () => {
-    const response = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
-    if (response === 'granted') {
-      extractTextFromDocument();
-    } else {
-      addLog('Storage permission was denied.');
     }
   };
 
@@ -102,8 +74,6 @@ const App = () => {
             style={styles.pdfView}
           />
         )}
-        <Button title="Request Permission and Extract Text" onPress={requestStoragePermission} />
-        <Button title="Read Text" onPress={handleReadText} />
         <ScrollView style={styles.logView}>
           <TextInput
             style={{ height: '100%' }}
@@ -117,7 +87,6 @@ const App = () => {
             value={logs.join('\n')}
           />
         </ScrollView>
-        <Button title="Copy Logs" onPress={copyLogsToClipboard} />
       </View>
     </ErrorBoundary>
   );
