@@ -22,7 +22,7 @@ const App = () => {
       // Use result.uri
       
       const filePath = JSON.stringify(result[0].uri);
-      setPdfUri("http://samples.leanpub.com/thereactnativebook-sample.pdf"); // Set the selected PDF's file path to state
+      setPdfUri(filePath); // Set the selected PDF's file path to state
       addLog(`Selected PDF from: ${filePath}`);
       addLog(`Result object contains: ${JSON.stringify(result, null, 2)}`);
     } catch (err) {
@@ -64,24 +64,22 @@ const App = () => {
 
   return (
     <View style={styles.container}>
-      <Button title="Select PDF" onPress={selectPDFFile} />
-      {pdfUri && (
-        <PDFView
-          source={{ uri: pdfUri, cache: true }}
-          style={styles.pdfView}
-        />
-      )}
-      <Button title="Request Permission and Extract Text" onPress={requestStoragePermission} />
-      <Button title="Read Text" onPress={handleReadText} />
+      {/* ... (rest of the components) */}
       <ScrollView style={styles.logView}>
         <TextInput
           style={{ height: '100%' }}
           multiline={true}
-          editable={false}
+          editable={true} // Allow editing to select and copy
+          onChangeText={(text) => {
+            if (text !== logs.join('\n')) {
+              // Reset logs if user tries to modify them
+              setLogs(logs);
+            }
+          }}
           value={logs.join('\n')}
         />
       </ScrollView>
-          <Button title="Copy Logs" onPress={copyLogsToClipboard} />
+      <Button title="Copy Logs" onPress={copyLogsToClipboard} />
     </View>
   );
 };
