@@ -24,7 +24,7 @@ const App = () => {
       setPdfUri(filePath); // Set the selected PDF's file path to state
       addLog(`Selected PDF from: ${filePath}`);
       addLog(`Result object contains: ${JSON.stringify(result, null, 2)}`);
-      addLog(`${JSON.result[0].uri}`);
+      addLog(`${JSON.stringify(result[0].uri)}`);
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         addLog('PDF selection was cancelled.');
