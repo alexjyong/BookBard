@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main  # or your default branch name
+    paths-ignore:
+      - '**.md'  # Ignore markdown files
 
 jobs:
   build:
@@ -14,15 +16,32 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
+    - name: Cache Node.js modules
+      uses: actions/cache@v3
+      with:
+        path: BookBard/node_modules
+        key: ${{ runner.OS }}-node-${{ hashFiles('BookBard/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.OS }}-node-
+
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
         node-version: '14'  # or your preferred Node.js version
 
     - name: Install dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
       run: |
         cd BookBard
         npm install
+
+    - name: Cache Gradle packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.gradle/caches
+        key: ${{ runner.OS }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.OS }}-gradle-
 
     - name: Set up JDK 11
       uses: actions/setup-java@v3
