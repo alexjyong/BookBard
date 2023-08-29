@@ -19,7 +19,7 @@ const App = () => {
       const result = await DocumentPicker.pickSingle({
         type: [DocumentPicker.types.pdf],
       });
-      const filePath = decodeURIComponent(JSON.stringify(result.uri));
+      const filePath = result.uri;
       setPdfUri(filePath); // Set the selected PDF's file path to state
       addLog(`Selected PDF from: ${filePath}`);
       addLog(`Result object contains: ${JSON.stringify(result, null, 2)}`);
@@ -60,35 +60,57 @@ const App = () => {
     }
   };
 
+  class ErrorBoundary extends React.Component {
+    state = { hasError: false, error: null, errorInfo: null };
+  
+    static getDerivedStateFromError(error) {
+      return { hasError: true, error };
+    }
+  
+    componentDidCatch(error, errorInfo) {
+      this.setState({ errorInfo });
+      this.props.addLog(`Error occurred: ${error.toString()}`);
+      this.props.addLog(`Error details: ${errorInfo.componentStack}`);
+    }
+  
+    render() {
+      if (this.state.hasError) {
+        return <Text>Error occurred. Check logs for details.</Text>;
+      }
+  
+      return this.props.children;
+    }
+  }
+
   return (
-    <View style={styles.container}>
-      <Button title="Select PDF" onPress={selectPDFFile} />
-      {pdfUri && (
-        <PDFView
-          source={{ uri: pdfUri, cache: true }}
-          style={styles.pdfView}
-        />
-      )}
-      <Button title="Request Permission and Extract Text" onPress={requestStoragePermission} />
-      <Button title="Read Text" onPress={handleReadText} />
-      <ScrollView style={styles.logView}>
-        <TextInput
-          style={{ height: '100%' }}
-          multiline={true}
-          editable={true} // Allow editing to select and copy
-          onChangeText={(text) => {
-            if (text !== logs.join('\n')) {
-              // Reset logs if user tries to modify them
-              setLogs(logs);
-            }
-          }}
-          value={logs.join('\n')}
-        />
-      </ScrollView>
-          <Button title="Copy Logs" onPress={copyLogsToClipboard} />
-    </View>
+    <ErrorBoundary addLog={addLog}>
+      <View style={styles.container}>
+        <Button title="Select PDF" onPress={selectPDFFile} />
+        {pdfUri && (
+          <PDFView
+            source={{ uri: pdfUri, cache: true }}
+            style={styles.pdfView}
+          />
+        )}
+        <Button title="Request Permission and Extract Text" onPress={requestStoragePermission} />
+        <Button title="Read Text" onPress={handleReadText} />
+        <ScrollView style={styles.logView}>
+          <TextInput
+            style={{ height: '100%' }}
+            multiline={true}
+            editable={true}
+            onChangeText={(text) => {
+              if (text !== logs.join('\n')) {
+                setLogs(logs);
+              }
+            }}
+            value={logs.join('\n')}
+          />
+        </ScrollView>
+        <Button title="Copy Logs" onPress={copyLogsToClipboard} />
+      </View>
+    </ErrorBoundary>
   );
-};
 
 const styles = StyleSheet.create({
   container: {
