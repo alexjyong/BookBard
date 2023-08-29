@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, View, Button, Text, ScrollView, Clipboard } from 'react-native';
+import { StyleSheet, TextInput, View, Button, Text, ScrollView, Clipboard, Platform } from 'react-native';
 import PDFView from 'react-native-pdf';
 import Tts from 'react-native-tts';
 import { request, PERMISSIONS } from 'react-native-permissions';
@@ -29,11 +29,19 @@ class ErrorBoundary extends React.Component {
 
 const App = () => {
   const [textToRead, setTextToRead] = useState('');
-  const [pdfUri, setPdfUri] = useState(null); // State to hold the selected PDF's URI
-  const [logs, setLogs] = useState([]); // State to hold logs
+  const [pdfUri, setPdfUri] = useState(null);
+  const [logs, setLogs] = useState([]);
 
   const addLog = (message) => {
     setLogs((prevLogs) => [...prevLogs, message]);
+  };
+
+  const takePersistablePermission = (uri) => {
+    if (Platform.OS === 'android') {
+      const contentResolver = android.content.Context.getContentResolver();
+      const takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION;
+      contentResolver.takePersistableUriPermission(uri, takeFlags);
+    }
   };
 
   const selectPDFFile = async () => {
@@ -42,7 +50,8 @@ const App = () => {
         type: [DocumentPicker.types.pdf],
       });
       const filePath = result.uri;
-      setPdfUri(filePath); // Set the selected PDF's file path to state
+      setPdfUri(filePath);
+      takePersistablePermission(filePath);
       addLog(`Selected PDF from: ${filePath}`);
       addLog(`Result object contains: ${JSON.stringify(result, null, 2)}`);
     } catch (err) {
