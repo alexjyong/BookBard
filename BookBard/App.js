@@ -64,7 +64,15 @@ const App = () => {
 
   return (
     <View style={styles.container}>
-      {/* ... (rest of the components) */}
+      <Button title="Select PDF" onPress={selectPDFFile} />
+      {pdfUri && (
+        <PDFView
+          source={{ uri: pdfUri, cache: true }}
+          style={styles.pdfView}
+        />
+      )}
+      <Button title="Request Permission and Extract Text" onPress={requestStoragePermission} />
+      <Button title="Read Text" onPress={handleReadText} />
       <ScrollView style={styles.logView}>
         <TextInput
           style={{ height: '100%' }}
@@ -79,7 +87,7 @@ const App = () => {
           value={logs.join('\n')}
         />
       </ScrollView>
-      <Button title="Copy Logs" onPress={copyLogsToClipboard} />
+          <Button title="Copy Logs" onPress={copyLogsToClipboard} />
     </View>
   );
 };
