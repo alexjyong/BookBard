@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, View, Button, Text, ScrollView, Clipboard, Alert, ErrorUtils } from 'react-native';
+import { StyleSheet, TextInput, View, Button, Text, ScrollView, Clipboard, Alert } from 'react-native';
 import PDFView from 'react-native-pdf';
 import Tts from 'react-native-tts';
 import { request, PERMISSIONS } from 'react-native-permissions';
@@ -162,6 +162,8 @@ const globalErrorHandler = (error, isFatal) => {
 };
 
 // Setting up global error handler
-ErrorUtils.setGlobalHandler(globalErrorHandler);
+
+global.ErrorUtils.setGlobalHandler(globalErrorHandler);
+
 
 export default App;
