@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, View, Button, Text, ScrollView } from 'react-native';
+import { StyleSheet, TextInput, View, Button, Text, ScrollView, Clipboard } from 'react-native';
 import PDFView from 'react-native-pdf';
 import Tts from 'react-native-tts';
 import { request, PERMISSIONS } from 'react-native-permissions';
