@@ -1,94 +1,72 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Button, Text, ScrollView, TextInput } from 'react-native';
 import PDFView from 'react-native-pdf';
-import Tts from 'react-native-tts';
+import EpubViewer from 'react-native-epub-viewer';
 import { request, PERMISSIONS } from 'react-native-permissions';
 import DocumentPicker from 'react-native-document-picker';
-import RNFS from 'react-native-fs';
-
-class ErrorBoundary extends React.Component {
-  state = { hasError: false, error: null, errorInfo: null };
-
-  static getDerivedStateFromError(error) {
-    return { hasError: true, error };
-  }
-
-  componentDidCatch(error, errorInfo) {
-    this.setState({ errorInfo });
-    this.props.addLog(`Error occurred: ${error.toString()}`);
-    this.props.addLog(`Error details: ${errorInfo.componentStack}`);
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return <Text>Error occurred. Check logs for details.</Text>;
-    }
-
-    return this.props.children;
-  }
-}
-
-const uriToBase64 = async (uri) => {
-  try {
-    const fileContent = await RNFS.readFile(uri, 'base64');
-    return `data:application/pdf;base64,${fileContent}`;
-  } catch (error) {
-    console.error("Failed to convert URI to base64", error);
-    return null;
-  }
-};
 
 const App = () => {
-  const [pdfUri, setPdfUri] = useState(null);
+  const [fileUri, setFileUri] = useState(null);
+  const [fileType, setFileType] = useState(null);
   const [logs, setLogs] = useState([]);
 
   const addLog = (message) => {
     setLogs((prevLogs) => [...prevLogs, message]);
   };
 
-  const selectPDFFile = async () => {
+  const selectFile = async () => {
     try {
       const result = await DocumentPicker.pickSingle({
-        type: [DocumentPicker.types.pdf],
+        type: [DocumentPicker.types.pdf, DocumentPicker.types.plainText], // This will allow selection of PDF and EPUB
       });
-      const base64String = await uriToBase64(result.uri);
-      setPdfUri(base64String);
-      addLog(`Selected PDF from: ${result.uri}`);
+      setFileUri(result.uri);
+      setFileType(result.type === 'application/pdf' ? 'pdf' : 'epub');
+      addLog(`Selected file from: ${result.uri}`);
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
-        addLog('PDF selection was cancelled.');
+        addLog('File selection was cancelled.');
       } else {
-        addLog(`Error selecting PDF: ${err.message}`);
+        addLog(`Error selecting file: ${err.message}`);
         throw err;
       }
     }
   };
 
+  const openFile = () => {
+    if (fileType === 'pdf') {
+      // Render PDF using PDFView
+    } else if (fileType === 'epub') {
+      EpubViewer.open(fileUri);
+      EpubViewer.on('error', (error) => {
+        addLog(`EPUB error: ${error.message}`);
+      });
+    }
+  };
+
   return (
-    <ErrorBoundary addLog={addLog}>
-      <View style={styles.container}>
-        <Button title="Select PDF" onPress={selectPDFFile} />
-        {pdfUri && (
-          <PDFView
-            source={{ uri: pdfUri, cache: true }}
-            style={styles.pdfView}
-          />
-        )}
-        <ScrollView style={styles.logView}>
-          <TextInput
-            style={{ height: '100%' }}
-            multiline={true}
-            editable={true}
-            onChangeText={(text) => {
-              if (text !== logs.join('\n')) {
-                setLogs(logs);
-              }
-            }}
-            value={logs.join('\n')}
-          />
-        </ScrollView>
-      </View>
-    </ErrorBoundary>
+    <View style={styles.container}>
+      <Button title="Select File" onPress={selectFile} />
+      {fileType === 'pdf' && (
+        <PDFView
+          source={{ uri: fileUri, cache: true }}
+          style={styles.pdfView}
+        />
+      )}
+      <Button title="Open File" onPress={openFile} />
+      <ScrollView style={styles.logView}>
+        <TextInput
+          style={{ height: '100%' }}
+          multiline={true}
+          editable={true}
+          onChangeText={(text) => {
+            if (text !== logs.join('\n')) {
+              setLogs(logs);
+            }
+          }}
+          value={logs.join('\n')}
+        />
+      </ScrollView>
+    </View>
   );
 }
 
