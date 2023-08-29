@@ -20,11 +20,11 @@ const App = () => {
         type: [DocumentPicker.types.pdf],
       });
       // Use result.uri
-      const filePath = JSON.stringify(result[0].uri);
+      
+      const filePath = result[0].uri;
       setPdfUri(filePath); // Set the selected PDF's file path to state
       addLog(`Selected PDF from: ${filePath}`);
       addLog(`Result object contains: ${JSON.stringify(result, null, 2)}`);
-      addLog(`${JSON.stringify(result[0].uri)}`);
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         addLog('PDF selection was cancelled.');
@@ -33,6 +33,11 @@ const App = () => {
         throw err;
       }
     }
+  };
+
+  const copyLogsToClipboard = () => {
+    Clipboard.setString(logs.join('\n'));
+    addLog('Logs copied to clipboard.');
   };
 
   // Dummy function to extract text from PDF (you'll need a real method to extract text)
@@ -76,6 +81,7 @@ const App = () => {
           value={logs.join('\n')}
         />
       </ScrollView>
+          <Button title="Copy Logs" onPress={copyLogsToClipboard} />
     </View>
   );
 };
