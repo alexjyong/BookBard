@@ -50,8 +50,8 @@ const App = () => {
         type: [DocumentPicker.types.pdf],
       });
       const filePath = result.uri;
-      setPdfUri(filePath);
       takePersistablePermission(filePath);
+      setPdfUri(filePath);
       addLog(`Selected PDF from: ${filePath}`);
       addLog(`Result object contains: ${JSON.stringify(result, null, 2)}`);
     } catch (err) {
