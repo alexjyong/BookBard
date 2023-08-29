@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, View, Button, Text, ScrollView, Clipboard, Alert } from 'react-native';
+import { StyleSheet, TextInput, View, Button, Text, ScrollView, Clipboard, Platform } from 'react-native';
 import PDFView from 'react-native-pdf';
 import Tts from 'react-native-tts';
 import { request, PERMISSIONS } from 'react-native-permissions';
@@ -26,7 +26,6 @@ class ErrorBoundary extends React.Component {
     return this.props.children;
   }
 }
-
 
 const App = () => {
   const [textToRead, setTextToRead] = useState('');
@@ -143,27 +142,5 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 });
-
-// Global error handler
-const globalErrorHandler = (error, isFatal) => {
-  Alert.alert(
-    'Unexpected error occurred',
-    `
-      Error: ${isFatal ? 'Fatal:' : ''} ${error.name} ${error.message}
-      We will need to restart the app.
-    `,
-    [{
-      text: 'Restart',
-      onPress: () => {
-        // You can add code to restart the app here
-      }
-    }]
-  );
-};
-
-// Setting up global error handler
-
-global.ErrorUtils.setGlobalHandler(globalErrorHandler);
-
 
 export default App;
