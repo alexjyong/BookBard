@@ -64,8 +64,8 @@ const App = () => {
   };
 
   return (
-    <View style={{flex: 1, flexDirection: 'column'}}>
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    <View style={styles.container}>
+      <View style={styles.topSection}>
         <Text>Extracted EPUB Text:</Text>
         <Text>{epubText}</Text>
         <Button title="Pick EPUB File" onPress={pickDocument} />
@@ -83,11 +83,36 @@ const App = () => {
           value={logs.join('\n')}
         />
       </ScrollView>
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <View style={styles.bottomSection}>
         <Button title="Copy Logs" onPress={copyLogsToClipboard} />
       </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+  },
+  topSection: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  logView: {
+    flex: 2, // This will allow the logView to take up more space
+    marginTop: 20,
+    width: '80%',
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 10,
+  },
+  bottomSection: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 
 export default App;
