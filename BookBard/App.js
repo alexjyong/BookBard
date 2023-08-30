@@ -64,37 +64,31 @@ const App = () => {
   };
 
   return (
+  <View style={{flex: 1, flexDirection: 'column'}}>
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <Text>Extracted EPUB Text:</Text>
       <Text>{epubText}</Text>
       <Button title="Pick EPUB File" onPress={pickDocument} />
-      <ScrollView style={styles.logView}>
-        <TextInput
-          style={{height: '50%'}}
-          multiline={true}
-          editable={true}
-          onChangeText={text => {
-            if (text !== logs.join('\n')) {
-              setLogs(logs);
-            }
-          }}
-          value={logs.join('\n')}
-        />
-      </ScrollView>
+    </View>
+    <ScrollView style={styles.logView}>
+      <TextInput
+        style={{height: '100%'}}
+        multiline={true}
+        editable={true}
+        onChangeText={text => {
+          if (text !== logs.join('\n')) {
+            setLogs(logs);
+          }
+        }}
+        value={logs.join('\n')}
+      />
+    </ScrollView>
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <Button title="Copy Logs" onPress={copyLogsToClipboard} />
     </View>
-  );
-};
+  </View>
+);
 
-const styles = StyleSheet.create({
-  logView: {
-    marginTop: 20,
-    width: '80%',
-    height: '100%',
-    borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 10,
-  },
-});
+};
 
 export default App;
