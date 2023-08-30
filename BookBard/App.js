@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
   logView: {
     marginTop: 20,
     width: '80%',
-    height: 25%,
+    height: '25%',
     borderWidth: 1,
     borderColor: '#ccc',
     padding: 10,
