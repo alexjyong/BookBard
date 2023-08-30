@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Button, Text, ScrollView, TextInput } from 'react-native';
 import PDFView from 'react-native-pdf';
-import { Reader, ReaderProvider } from '@epubjs-react-native/core';
+//import { Reader, ReaderProvider } from '@epubjs-react-native/core';
 import { request, PERMISSIONS } from 'react-native-permissions';
 import DocumentPicker from 'react-native-document-picker';
 
@@ -41,7 +41,7 @@ const App = () => {
           style={styles.pdfView}
         />
       )}
-      {fileType === 'epub' && (
+      {/* {fileType === 'epub' && (
         <ReaderProvider>
           <Reader
             src={fileUri}
@@ -49,7 +49,7 @@ const App = () => {
             height={400}
           />
         </ReaderProvider>
-      )}
+      )} */}
       <ScrollView style={styles.logView}>
         <TextInput
           style={{ height: '100%' }}
