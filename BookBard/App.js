@@ -6,12 +6,18 @@ import DocumentPicker from 'react-native-document-picker';
 
 const App = () => {
   const [epubText, setEpubText] = useState('');
+  const [logs, setLogs] = useState([]);
+
+  const addLog = (message) => {
+    setLogs((prevLogs) => [...prevLogs, message]);
+  };
 
   const pickDocument = async () => {
     try {
-      const result = await DocumentPicker.pick({
-        type: [DocumentPicker.types.allFiles],
+      const result = await DocumentPicker.picksingle({
+        type: ["application/epub+zip"],
       });
+      addLog(`JSON.stringify(${result})`)
 
       if (result) {
         extractEpubText(result.uri);
@@ -45,8 +51,33 @@ const App = () => {
       <Text>Extracted EPUB Text:</Text>
       <Text>{epubText}</Text>
       <Button title="Pick EPUB File" onPress={pickDocument} />
+      <ScrollView style={styles.logView}>
+          <TextInput
+            style={{ height: '100%' }}
+            multiline={true}
+            editable={true}
+            onChangeText={(text) => {
+              if (text !== logs.join('\n')) {
+                setLogs(logs);
+              }
+            }}
+            value={logs.join('\n')}
+          />
+        </ScrollView>
+        <Button title="Copy Logs" onPress={copyLogsToClipboard} />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  logView: {
+    marginTop: 20,
+    width: '80%',
+    height: 100,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 10,
+  }
+});
 
 export default App;
