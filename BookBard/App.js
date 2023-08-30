@@ -64,31 +64,30 @@ const App = () => {
   };
 
   return (
-  <View style={{flex: 1, flexDirection: 'column'}}>
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Extracted EPUB Text:</Text>
-      <Text>{epubText}</Text>
-      <Button title="Pick EPUB File" onPress={pickDocument} />
+    <View style={{flex: 1, flexDirection: 'column'}}>
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <Text>Extracted EPUB Text:</Text>
+        <Text>{epubText}</Text>
+        <Button title="Pick EPUB File" onPress={pickDocument} />
+      </View>
+      <ScrollView style={styles.logView}>
+        <TextInput
+          style={{height: '100%'}}
+          multiline={true}
+          editable={true}
+          onChangeText={text => {
+            if (text !== logs.join('\n')) {
+              setLogs(logs);
+            }
+          }}
+          value={logs.join('\n')}
+        />
+      </ScrollView>
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <Button title="Copy Logs" onPress={copyLogsToClipboard} />
+      </View>
     </View>
-    <ScrollView style={styles.logView}>
-      <TextInput
-        style={{height: '100%'}}
-        multiline={true}
-        editable={true}
-        onChangeText={text => {
-          if (text !== logs.join('\n')) {
-            setLogs(logs);
-          }
-        }}
-        value={logs.join('\n')}
-      />
-    </ScrollView>
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Button title="Copy Logs" onPress={copyLogsToClipboard} />
-    </View>
-  </View>
-);
-
+  );
 };
 
 export default App;
