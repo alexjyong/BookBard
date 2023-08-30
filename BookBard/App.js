@@ -48,8 +48,9 @@ const App = () => {
 
   const extractEpubText = async filePath => {
     // Read the EPUB file
-    addLog('hi mom');
+    addLog(filePath);
     const data = await RNFS.readFile(filePath, 'base64');
+    addLog(JSON.stringify(data));
     const epubData = `data:application/epub+zip;base64,${data}`;
     const book = ePub(epubData);
     addLog(JSON.stringify(book));
