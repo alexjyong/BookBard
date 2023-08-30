@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Button, Alert } from 'react-native';
+import { View, Text, Button, Alert, Stylesheet } from 'react-native';
 import ePub from 'epubjs';
 import RNFS from 'react-native-fs';
 import DocumentPicker from 'react-native-document-picker';
