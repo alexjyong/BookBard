@@ -31,7 +31,7 @@ const App = () => {
       const result = await DocumentPicker.pickSingle({
         type: ['application/epub+zip'],
       });
-      addLog(`JSON.stringify(${result})`);
+      addLog(JSON.stringify(result));
 
       if (result) {
         extractEpubText(result.uri);
@@ -68,7 +68,7 @@ const App = () => {
       <Button title="Pick EPUB File" onPress={pickDocument} />
       <ScrollView style={styles.logView}>
         <TextInput
-          style={{height: '100%'}}
+          style={{height: '50%'}}
           multiline={true}
           editable={true}
           onChangeText={text => {
