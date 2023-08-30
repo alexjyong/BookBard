@@ -28,7 +28,7 @@ const App = () => {
 
   const pickDocument = async () => {
     try {
-      const result = await DocumentPicker.picksingle({
+      const result = await DocumentPicker.pickSingle({
         type: ['application/epub+zip'],
       });
       addLog(`JSON.stringify(${result})`);
@@ -40,6 +40,7 @@ const App = () => {
       if (DocumentPicker.isCancel(err)) {
         Alert.alert('User cancelled the picker');
       } else {
+        addLog(`${err}`);
         throw err;
       }
     }
