@@ -51,6 +51,7 @@ const App = () => {
     const data = await RNFS.readFile(filePath, 'base64');
     const epubData = `data:application/epub+zip;base64,${data}`;
     const book = ePub(epubData);
+    addLog(JSON.stringify(book));
 
     // Get the first section (as an example)
     const section = book.spine.get(0);
@@ -88,7 +89,7 @@ const styles = StyleSheet.create({
   logView: {
     marginTop: 20,
     width: '80%',
-    height: 100,
+    height: 25%,
     borderWidth: 1,
     borderColor: '#ccc',
     padding: 10,
