@@ -31,7 +31,7 @@ const App = () => {
       const result = await DocumentPicker.pickSingle({
         type: ['application/epub+zip'],
       });
-      addLog(JSON.stringify(result));
+      //addLog(JSON.stringify(result));
 
       if (result) {
         extractEpubText(result.uri);
@@ -48,6 +48,7 @@ const App = () => {
 
   const extractEpubText = async filePath => {
     // Read the EPUB file
+    addLog("hi mom")
     const data = await RNFS.readFile(filePath, 'base64');
     const epubData = `data:application/epub+zip;base64,${data}`;
     const book = ePub(epubData);
@@ -89,7 +90,7 @@ const styles = StyleSheet.create({
   logView: {
     marginTop: 20,
     width: '80%',
-    height: '25%',
+    height: '100%',
     borderWidth: 1,
     borderColor: '#ccc',
     padding: 10,
