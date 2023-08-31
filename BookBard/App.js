@@ -57,12 +57,12 @@ const App = () => {
       const epubData = `data:application/epub+zip;base64,${data}`;
       addLog(`${epubData}`);
       const book = ePub(epubData);
-      if (!book){
+      if (!book) {
         addLog('Failed to get book data');
         return;
       }
       addLog('EPUB book initialized');
-      
+
       addLog(`Book title: ${book.package.metadata.title}`);
       addLog(`Number of sections: ${book.spine.length}`);
 
