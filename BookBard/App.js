@@ -1,4 +1,6 @@
 import React, {useState} from 'react';
+import { URL, URLSearchParams } from 'react-native-url-polyfill';
+
 import {
   View,
   Text,
@@ -56,7 +58,8 @@ const App = () => {
 
       const epubData = `data:application/epub+zip;base64,${data}`;
       //const book = ePub(data);
-      const book = ePub('https://s3.amazonaws.com/moby-dick/');
+      const url = new URL('https://s3.amazonaws.com/moby-dick/');
+      const book = ePub(url);
       if (!book) {
         addLog('Failed to get book data');
         return;
