@@ -61,8 +61,8 @@ const App = () => {
         return;
       }
       addLog('EPUB book initialized');
-      addLog(`${JSON.stringify(book)}`);
       addLog(`Number of sections: ${book.spine.length}`);
+      addLog(`${JSON.stringify(book)}`);
 
       addLog(`Book title: ${book.package.metadata.title}`);
       addLog(`Number of sections: ${book.spine.length}`);
