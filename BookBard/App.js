@@ -55,8 +55,7 @@ const App = () => {
       addLog('File read successfully');
 
       const epubData = `data:application/epub+zip;base64,${data}`;
-      addLog(`${epubData}`);
-      const book = ePub(epubData);
+      const book = ePub(data);
       if (!book) {
         addLog('Failed to get book data');
         return;
