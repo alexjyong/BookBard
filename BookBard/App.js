@@ -57,6 +57,8 @@ const App = () => {
       const epubData = `data:application/epub+zip;base64,${data}`;
       const book = ePub(epubData);
       addLog('EPUB book initialized');
+      addLog(`Book title: ${book.package.metadata.title}`);
+      addLog(`Number of sections: ${book.spine.length}`);
 
       // Get the first section (as an example)
       const section = book.spine.get(0);
