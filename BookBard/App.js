@@ -55,16 +55,17 @@ const App = () => {
       addLog('File read successfully');
 
       const epubData = `data:application/epub+zip;base64,${data}`;
-      const book = ePub(data);
+      //const book = ePub(data);
+      const book = ePub('https://s3.amazonaws.com/moby-dick/');
       if (!book) {
         addLog('Failed to get book data');
         return;
       }
       addLog('EPUB book initialized');
       addLog(`Number of sections: ${book.spine.length}`);
-      addLog(`${JSON.stringify(book)}`);
+      //addLog(`${JSON.stringify(book)}`);
 
-      addLog(`Book title: ${book.package.metadata.title}`);
+      //addLog(`Book title: ${book.package.metadata.title}`);
       addLog(`Number of sections: ${book.spine.length}`);
 
       // Get the first section (as an example)
