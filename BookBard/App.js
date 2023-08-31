@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { URL, URLSearchParams } from 'react-native-url-polyfill';
+import {URL, URLSearchParams} from 'react-native-url-polyfill';
 
 import {
   View,
