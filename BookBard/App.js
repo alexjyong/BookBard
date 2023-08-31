@@ -31,7 +31,6 @@ const App = () => {
       const result = await DocumentPicker.pickSingle({
         type: ['application/epub+zip'],
       });
-      //addLog(JSON.stringify(result));
 
       if (result) {
         extractEpubText(result.uri);
@@ -47,21 +46,39 @@ const App = () => {
   };
 
   const extractEpubText = async filePath => {
-    // Read the EPUB file
-    addLog(filePath);
-    const data = await RNFS.readFile(filePath, 'base64');
-    addLog(JSON.stringify(data));
-    const epubData = `data:application/epub+zip;base64,${data}`;
-    const book = ePub(epubData);
-    addLog(JSON.stringify(book));
+    try {
+      // Log the file path for debugging
+      addLog(`File Path: ${filePath}`);
 
-    // Get the first section (as an example)
-    const section = book.spine.get(0);
-    const contents = await section.load();
-    const text = contents.textContent;
+      // Read the EPUB file
+      const data = await RNFS.readFile(filePath, 'base64');
+      addLog('File read successfully');
 
-    // Set the extracted text to state
-    setEpubText(text);
+      const epubData = `data:application/epub+zip;base64,${data}`;
+      const book = ePub(epubData);
+      addLog('EPUB book initialized');
+
+      // Get the first section (as an example)
+      const section = book.spine.get(0);
+      if (!section) {
+        addLog('Failed to get section from EPUB book');
+        return;
+      }
+
+      const contents = await section.load();
+      if (!contents) {
+        addLog('Failed to load contents from section');
+        return;
+      }
+
+      const text = contents.textContent;
+
+      // Set the extracted text to state
+      setEpubText(text);
+      addLog('EPUB text extracted successfully');
+    } catch (error) {
+      addLog(`Error: ${error.message}`);
+    }
   };
 
   return (
