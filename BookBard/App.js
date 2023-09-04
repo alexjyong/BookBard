@@ -72,7 +72,7 @@ const App = () => {
       addLog(`Number of sections: ${book.spine.length}`);
 
       addLog(book);
-      addLog(JSON.stringify(book))
+      addLog(JSON.stringify(book));
 
       // Get the first section (as an example)
       const section = book.spine.get(0);
