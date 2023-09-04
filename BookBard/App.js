@@ -71,6 +71,8 @@ const App = () => {
       //addLog(`Book title: ${book.package.metadata.title}`);
       addLog(`Number of sections: ${book.spine.length}`);
 
+      addLog(book);
+
       // Get the first section (as an example)
       const section = book.spine.get(0);
       if (!section) {
