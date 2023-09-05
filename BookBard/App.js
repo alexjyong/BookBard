@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { URL, URLSearchParams } from 'react-native-url-polyfill';
+import React, {useState} from 'react';
+import {URL, URLSearchParams} from 'react-native-url-polyfill';
 import {
   View,
   Text,
@@ -69,7 +69,7 @@ const App = () => {
       addLog(`Number of sections: ${book.spine.length}`);
 
       // Using util.inspect to log the book object
-      addLog(util.inspect(book, { depth: null, showHidden: true }));
+      addLog(util.inspect(book, {depth: null, showHidden: true}));
 
       // Get the first section (as an example)
       const section = book.spine.get(0);
@@ -103,7 +103,7 @@ const App = () => {
       </View>
       <ScrollView style={styles.logView}>
         <TextInput
-          style={{ height: '100%' }}
+          style={{height: '100%'}}
           multiline={true}
           editable={true}
           onChangeText={text => {
