@@ -1,6 +1,5 @@
-import React, {useState} from 'react';
-import {URL, URLSearchParams} from 'react-native-url-polyfill';
-
+import React, { useState } from 'react';
+import { URL, URLSearchParams } from 'react-native-url-polyfill';
 import {
   View,
   Text,
@@ -14,6 +13,9 @@ import {
 import ePub from 'epubjs';
 import RNFS from 'react-native-fs';
 import DocumentPicker from 'react-native-document-picker';
+
+// Importing the util module for Node.js environments
+const util = require('util');
 
 const App = () => {
   const [epubText, setEpubText] = useState('');
@@ -57,7 +59,6 @@ const App = () => {
       addLog('File read successfully');
 
       const epubData = `data:application/epub+zip;base64,${data}`;
-      //const book = ePub(data);
       const url = new URL('https://s3.amazonaws.com/moby-dick/');
       const book = ePub(url);
       if (!book) {
@@ -66,13 +67,9 @@ const App = () => {
       }
       addLog('EPUB book initialized');
       addLog(`Number of sections: ${book.spine.length}`);
-      //addLog(`${JSON.stringify(book)}`);
 
-      //addLog(`Book title: ${book.package.metadata.title}`);
-      addLog(`Number of sections: ${book.spine.length}`);
-
-      addLog(book);
-      addLog(JSON.stringify(book));
+      // Using util.inspect to log the book object
+      addLog(util.inspect(book, { depth: null, showHidden: true }));
 
       // Get the first section (as an example)
       const section = book.spine.get(0);
@@ -106,7 +103,7 @@ const App = () => {
       </View>
       <ScrollView style={styles.logView}>
         <TextInput
-          style={{height: '100%'}}
+          style={{ height: '100%' }}
           multiline={true}
           editable={true}
           onChangeText={text => {
@@ -135,7 +132,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logView: {
-    flex: 2, // This will allow the logView to take up more space
+    flex: 2,
     marginTop: 20,
     width: '80%',
     borderWidth: 1,
