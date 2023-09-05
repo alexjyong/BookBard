@@ -14,9 +14,6 @@ import ePub from 'epubjs';
 import RNFS from 'react-native-fs';
 import DocumentPicker from 'react-native-document-picker';
 
-// Importing the util module for Node.js environments
-const util = require('util');
-
 const App = () => {
   const [epubText, setEpubText] = useState('');
   const [logs, setLogs] = useState([]);
@@ -24,6 +21,20 @@ const App = () => {
   const addLog = message => {
     setLogs(prevLogs => [...prevLogs, message]);
   };
+
+  function safeLog(obj, depth = 5) {
+    const cache = new Set();
+    const output = JSON.stringify(obj, (key, value) => {
+      if (typeof value === 'object' && value !== null) {
+        if (cache.has(value)) {
+          return '[Circular]';
+        }
+        cache.add(value);
+      }
+      return value;
+    }, depth);
+    addLog(output);
+  }
 
   const copyLogsToClipboard = () => {
     Clipboard.setString(logs.join('\n'));
@@ -68,8 +79,7 @@ const App = () => {
       addLog('EPUB book initialized');
       addLog(`Number of sections: ${book.spine.length}`);
 
-      // Using util.inspect to log the book object
-      addLog(util.inspect(book, {depth: null, showHidden: true}));
+      safeLog(book);
 
       // Get the first section (as an example)
       const section = book.spine.get(0);

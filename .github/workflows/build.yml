@@ -36,8 +36,8 @@ jobs:
         cd BookBard
         npm install
 
-    - name: Lint check
-      run: cd BookBard; npm install --save react-native-url-polyfill; npx eslint . --ext .js,.jsx
+    - name: Lint and depcheck check
+      run: cd BookBard; npm install --save react-native-url-polyfill; npx eslint . --ext .js,.jsx; depcheck
 
     - name: Cache Gradle packages
       uses: actions/cache@v3
