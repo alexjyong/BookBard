@@ -83,7 +83,7 @@ const App = () => {
       addLog('EPUB book initialized');
       addLog(`Number of sections: ${book.spine.length}`);
 
-      safeLog(book);
+      //safeLog(book);
 
       // Get the first section (as an example)
       const section = book.spine.get(0);
