@@ -75,7 +75,6 @@ const App = () => {
 
       //const epubData = `data:application/epub+zip;base64,${data}`;
       const epubData = `${data}`;
-      const url = new URL('https://s3.amazonaws.com/moby-dick/');
       const book = ePub(epubData);
       if (!book) {
         addLog('Failed to get book data');
