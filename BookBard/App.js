@@ -73,7 +73,8 @@ const App = () => {
       const data = await RNFS.readFile(filePath, 'base64');
       addLog('File read successfully');
 
-      const epubData = `data:application/epub+zip;base64,${data}`;
+      //const epubData = `data:application/epub+zip;base64,${data}`;
+      const epubData = `${data}`;
       const url = new URL('https://s3.amazonaws.com/moby-dick/');
       const book = ePub(epubData);
       if (!book) {
