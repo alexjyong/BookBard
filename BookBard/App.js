@@ -86,7 +86,7 @@ const App = () => {
       //safeLog(book);
 
       // Get the first section (as an example)
-      const section = book.spine.first()
+      const section = book.spine.first();
       if (!section) {
         addLog('Failed to get section from EPUB book');
         return;
