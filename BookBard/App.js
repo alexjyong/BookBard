@@ -17,14 +17,13 @@ export default function App() {
       });
 
       if (result) {
-        const base64 = await RNFS.readFile(result.uri, 'base64');
+        //const base64 = await RNFS.readFile(result.uri, 'base64');
         Alert.alert('Alert Title', `${result.uri}`, [
           {
             text: 'ok',
           },
         ]);
-
-        setEpubSrc(base64);
+        setEpubSrc(result.uri);
       }
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
