@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Button, View } from 'react-native';
+import React, {useState} from 'react';
+import {Button, View} from 'react-native';
 import RNFS from 'react-native-fs';
 import DocumentPicker from 'react-native-document-picker';
-import { Reader, ReaderProvider } from '@epubjs-react-native/core';
+import {Reader, ReaderProvider} from '@epubjs-react-native/core';
 
 const App = () => {
   const [epubBase64, setEpubBase64] = useState(null);
@@ -27,7 +27,7 @@ const App = () => {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{flex: 1}}>
       <Button title="Pick an EPUB" onPress={pickDocument} />
       {epubBase64 && (
         <ReaderProvider>
@@ -35,10 +35,10 @@ const App = () => {
             src={`data:application/epub+zip;base64,${epubBase64}`}
             flow="paginated" // or "scrolled"
             location={0}
-            onLocationChange={(visibleLocation) => {
+            onLocationChange={visibleLocation => {
               console.log(visibleLocation);
             }}
-            onReady={(book) => {
+            onReady={book => {
               console.log(book);
             }}
           />
