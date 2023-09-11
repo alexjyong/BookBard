@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {SafeAreaView, Button, useWindowDimensions} from 'react-native';
+import {SafeAreaView, Button, useWindowDimensions, Alert} from 'react-native';
 import {Reader, ReaderProvider} from '@epubjs-react-native/core';
 import {useFileSystem} from '@epubjs-react-native/file-system';
 import RNFS from 'react-native-fs';
@@ -13,11 +13,17 @@ export default function App() {
   const pickDocument = async () => {
     try {
       const result = await DocumentPicker.pick({
-        type: [DocumentPicker.types.allFiles], // You might want to specify epub mime type here
+        type: ['application/epub+zip'],
       });
 
       if (result) {
         const base64 = await RNFS.readFile(result.uri, 'base64');
+        Alert.alert('Alert Title', `${result.uri}`, [
+          {
+            text: 'ok',
+          },
+        ]);
+
         setEpubSrc(base64);
       }
     } catch (err) {
