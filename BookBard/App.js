@@ -12,7 +12,7 @@ export default function App() {
 
   const pickDocument = async () => {
     try {
-      const result = await DocumentPicker.pick({
+      const result = await DocumentPicker.pickSingle({
         type: ['application/epub+zip'],
       });
 
