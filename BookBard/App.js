@@ -32,18 +32,31 @@ export default function App() {
   };
 
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <Button title="Pick an EPUB" onPress={pickDocument} />
-      {epubSrc && (
-        <ReaderProvider>
-          <Reader
-            src={epubSrc}
-            width={width}
-            height={height}
-            fileSystem={fileSystem}
-          />
-        </ReaderProvider>
-      )}
+    <SafeAreaView>
+      <ReaderProvider>
+        <Reader
+          src="https://s3.amazonaws.com/moby-dick/OPS/package.opf"
+          width={width}
+          height={height}
+          fileSystem={useFileSystem}
+        />
+      </ReaderProvider>
     </SafeAreaView>
   );
+
+  // return (
+  //   <SafeAreaView style={{flex: 1}}>
+  //     <Button title="Pick an EPUB" onPress={pickDocument} />
+  //     {epubSrc && (
+  //       <ReaderProvider>
+  //         <Reader
+  //           src={epubSrc}
+  //           width={width}
+  //           height={height}
+  //           fileSystem={fileSystem}
+  //         />
+  //       </ReaderProvider>
+  //     )}
+  //   </SafeAreaView>
+  // );
 }
