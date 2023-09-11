@@ -1,21 +1,26 @@
 import React, {useState} from 'react';
-import {Button, View} from 'react-native';
+import {SafeAreaView, Button, useWindowDimensions} from 'react-native';
+import {Reader, ReaderProvider} from '@epubjs-react-native/core';
+import {useFileSystem} from '@epubjs-react-native/file-system';
 import RNFS from 'react-native-fs';
 import DocumentPicker from 'react-native-document-picker';
-import {Reader, ReaderProvider} from '@epubjs-react-native/core';
 
-const App = () => {
-  const [epubBase64, setEpubBase64] = useState(null);
+export default function App() {
+  const {width, height} = useWindowDimensions();
+  const [epubSrc, setEpubSrc] = useState(null);
+  const fileSystem = useFileSystem();
 
   const pickDocument = async () => {
     try {
       const result = await DocumentPicker.pick({
-        type: [DocumentPicker.types.allFiles], // You might want to specify epub mime type here
+        type: ['application/epub+zip'], 
       });
 
       if (result) {
         const base64 = await RNFS.readFile(result.uri, 'base64');
-        setEpubBase64(base64);
+        const blob = fileSystem.base64ToBlob(base64, 'application/epub+zip');
+        const blobUrl = URL.createObjectURL(blob);
+        setEpubSrc(blobUrl);
       }
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
@@ -27,25 +32,18 @@ const App = () => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <Button title="Pick an EPUB" onPress={pickDocument} />
-      {epubBase64 && (
+      {epubSrc && (
         <ReaderProvider>
           <Reader
-            src={`data:application/epub+zip;base64,${epubBase64}`}
-            flow="paginated" // or "scrolled"
-            location={0}
-            onLocationChange={visibleLocation => {
-              console.log(visibleLocation);
-            }}
-            onReady={book => {
-              console.log(book);
-            }}
+            src={epubSrc}
+            width={width}
+            height={height}
+            fileSystem={fileSystem}
           />
         </ReaderProvider>
       )}
-    </View>
+    </SafeAreaView>
   );
-};
-
-export default App;
+}
