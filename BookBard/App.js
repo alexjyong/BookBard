@@ -75,6 +75,7 @@ const App = () => {
 
       //const epubData = `data:application/epub+zip;base64,${data}`;
       const epubData = `${data}`;
+
       const book = ePub(epubData);
       if (!book) {
         addLog('Failed to get book data');
@@ -84,7 +85,7 @@ const App = () => {
       addLog(`Number of sections: ${book.spine.length}`);
 
       //safeLog(book);
-
+      //book.spine.spineItems[4].contents.textContent (example of getting text)
       // Get the first section (as an example)
       const section = book.spine.first();
       if (!section) {
