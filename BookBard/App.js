@@ -13,14 +13,12 @@ export default function App() {
   const pickDocument = async () => {
     try {
       const result = await DocumentPicker.pick({
-        type: ['application/epub+zip'],
+        type: [DocumentPicker.types.allFiles], // You might want to specify epub mime type here
       });
 
       if (result) {
         const base64 = await RNFS.readFile(result.uri, 'base64');
-        const blob = fileSystem.base64ToBlob(base64, 'application/epub+zip');
-        const blobUrl = URL.createObjectURL(blob);
-        setEpubSrc(blobUrl);
+        setEpubSrc(base64);
       }
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
@@ -32,31 +30,18 @@ export default function App() {
   };
 
   return (
-    <SafeAreaView>
-      <ReaderProvider>
-        <Reader
-          src="https://s3.amazonaws.com/moby-dick/OPS/package.opf"
-          width={width}
-          height={height}
-          fileSystem={useFileSystem}
-        />
-      </ReaderProvider>
+    <SafeAreaView style={{flex: 1}}>
+      <Button title="Pick an EPUB" onPress={pickDocument} />
+      {epubSrc && (
+        <ReaderProvider>
+          <Reader
+            src={epubSrc}
+            width={width}
+            height={height}
+            fileSystem={fileSystem}
+          />
+        </ReaderProvider>
+      )}
     </SafeAreaView>
   );
-
-  // return (
-  //   <SafeAreaView style={{flex: 1}}>
-  //     <Button title="Pick an EPUB" onPress={pickDocument} />
-  //     {epubSrc && (
-  //       <ReaderProvider>
-  //         <Reader
-  //           src={epubSrc}
-  //           width={width}
-  //           height={height}
-  //           fileSystem={fileSystem}
-  //         />
-  //       </ReaderProvider>
-  //     )}
-  //   </SafeAreaView>
-  // );
 }
