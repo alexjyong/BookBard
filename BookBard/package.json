@@ -15,12 +15,11 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "epubjs": "^0.3.93",
+    "@epubjs-react-native/core": "^1.2.0",
     "react": "18.1.0",
     "react-native": "0.70.6",
     "react-native-document-picker": "^9.0.1",
-    "react-native-fs": "^2.20.0",
-    "react-native-url-polyfill": "^2.0.0"
+    "react-native-fs": "^2.20.0"
   },
   "devDependencies": {
     "@react-native-community/eslint-config": "^2.0.0",
