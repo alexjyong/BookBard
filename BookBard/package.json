@@ -16,10 +16,13 @@
   },
   "dependencies": {
     "@epubjs-react-native/core": "^1.2.0",
+    "@epubjs-react-native/file-system": "^1.0.0",
     "react": "18.1.0",
     "react-native": "0.70.6",
     "react-native-document-picker": "^9.0.1",
-    "react-native-fs": "^2.20.0"
+    "react-native-fs": "^2.20.0",
+    "react-native-gesture-handler": "^2.12.1",
+    "react-native-webview": "^13.6.0"
   },
   "devDependencies": {
     "@react-native-community/eslint-config": "^2.0.0",
