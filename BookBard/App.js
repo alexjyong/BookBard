@@ -17,13 +17,15 @@ export default function App() {
       });
 
       if (result) {
-        //const base64 = await RNFS.readFile(result.uri, 'base64');
-        Alert.alert('Alert Title', `${result.uri}`, [
+        const base64 = await RNFS.readFile(result.uri, 'base64');
+        const first10Chars = base64.substring(0, 10);
+
+        Alert.alert('Alert Title', `${first10Chars}`, [
           {
             text: 'ok',
           },
         ]);
-        setEpubSrc(result.uri);
+        setEpubSrc(base64);
       }
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
