@@ -58,7 +58,6 @@ jobs:
         pwd;
         ls;
         cd BookBard/android
-        ./gradlew clean
         ./gradlew assembleRelease
 
     - name: Upload APK
