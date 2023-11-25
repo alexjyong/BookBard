@@ -27,3 +27,24 @@ function onDeviceReady() {
     console.log('Running cordova-' + cordova.platformId + '@' + cordova.version);
     document.getElementById('deviceready').classList.add('ready');
 }
+
+function chooseAndReadFile() {
+    fileChooser.open(function (uri) {
+        window.resolveLocalFileSystemURL(uri, function (fileEntry) {
+            fileEntry.file(function (file) {
+                var reader = new FileReader();
+
+                reader.onloadend = function() {
+                    console.log("File contents: " + this.result);
+                };
+
+                reader.readAsText(file);
+            }, errorHandler);
+        }, errorHandler);
+    }, errorHandler);
+}
+
+function errorHandler(error) {
+    console.error("Error: " + error);
+}
+
