@@ -26,6 +26,7 @@ function onDeviceReady() {
 
     console.log('Running cordova-' + cordova.platformId + '@' + cordova.version);
     document.getElementById('deviceready').classList.add('ready');
+    alert("Ready!");
 }
 
 function chooseAndReadFile() {
@@ -45,6 +46,6 @@ function chooseAndReadFile() {
 }
 
 function errorHandler(error) {
-    console.error("Error: " + error);
+    alert("Error: " + error);
 }
 
