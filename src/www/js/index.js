@@ -29,21 +29,21 @@ function onDeviceReady() {
     alert("Ready!");
 }
 
-// function chooseAndReadFile() {
-//     fileChooser.open(function (uri) {
-//         window.resolveLocalFileSystemURL(uri, function (fileEntry) {
-//             fileEntry.file(function (file) {
-//                 var reader = new FileReader();
+function chooseAndReadFile() {
+    fileChooser.open(function (uri) {
+        window.resolveLocalFileSystemURL(uri, function (fileEntry) {
+            fileEntry.file(function (file) {
+                var reader = new FileReader();
 
-//                 reader.onloadend = function() {
-//                     console.log("File contents: " + this.result);
-//                 };
+                reader.onloadend = function() {
+                    console.log("File contents: " + this.result);
+                };
 
-//                 reader.readAsText(file);
-//             }, errorHandler);
-//         }, errorHandler);
-//     }, errorHandler);
-// }
+                reader.readAsText(file);
+            }, errorHandler);
+        }, errorHandler);
+    }, errorHandler);
+}
 
 function errorHandler(error) {
     alert("Error: " + error);
