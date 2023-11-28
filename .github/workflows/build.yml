@@ -21,6 +21,8 @@ jobs:
          rm -rf .github
          cd src
          docker run --rm -i -v /$PWD:/workspace -w /workspace --privileged beevelop/cordova cordova platform add android;
+         docker run --rm -i -v /$PWD:/workspace -w /workspace --privileged beevelop/cordova cordova plugin add cordova-plugin-file
+         docker run --rm -i -v /$PWD:/workspace -w /workspace --privileged beevelop/cordova cordova plugin add cordova-plugin-filechooser
          docker run --rm -i -v /$PWD:/workspace -w /workspace --privileged beevelop/cordova cordova build
                   
       - name: move file up
