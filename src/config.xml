@@ -1,11 +1,22 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="dev.alexjyong.bookbard" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>BookBard</name>
-    <description>Sample Apache Cordova App</description>
-    <author email="dev@cordova.apache.org" href="https://cordova.apache.org">
-        Apache Cordova Team
+    <description>An app to read ebooks as audio books</description>
+    <author email="alexjyong@example.com" href="http://alexjyong.dev">
+        Your Name or Team
     </author>
     <content src="index.html" />
-    <allow-intent href="http://*/*" />
-    <allow-intent href="https://*/*" />
+    <access origin="*" />
+
+    <!-- Android Platform Specific Settings -->
+    <platform name="android">
+        <preference name="android-minSdkVersion" value="22" />
+        <preference name="android-targetSdkVersion" value="30" />
+        <allow-intent href="market:*" />
+    </platform>
+
+    <!-- Plugin List -->
+    <plugin name="cordova-plugin-file" spec="^6.0.2" />
+    <plugin name="cordova-plugin-filechooser" spec="^1.2.0" />
+
 </widget>
