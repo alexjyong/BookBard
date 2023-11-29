@@ -30,6 +30,8 @@ function onDeviceReady() {
 }
 
 function chooseAndReadFile() {
+    alert("hey that tickles!")
+    /*
     fileChooser.open(function (uri) {
         window.resolveLocalFileSystemURL(uri, function (fileEntry) {
             fileEntry.file(function (file) {
@@ -42,7 +44,7 @@ function chooseAndReadFile() {
                 reader.readAsText(file);
             }, errorHandler);
         }, errorHandler);
-    }, errorHandler);
+    }, errorHandler); */
 }
 
 function errorHandler(error) {
