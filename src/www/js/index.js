@@ -28,10 +28,11 @@ function onDeviceReady() {
     alert('Running cordova-' + cordova.platformId + '@' + cordova.version);
     
     alert("Ready!");
+    chooseAndReadFile();
 }
 
 function chooseAndReadFile() {
-    alert("hey that tickles!")
+    alert("hey that tickles!");
     /*
     fileChooser.open(function (uri) {
         window.resolveLocalFileSystemURL(uri, function (fileEntry) {
