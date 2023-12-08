@@ -19,34 +19,46 @@
 
 // Wait for the deviceready event before using any of Cordova's device APIs.
 // See https://cordova.apache.org/docs/en/latest/cordova/events/events.html#deviceready
+
+// Dynamically load the Eruda script
+var erudaScript = document.createElement('script');
+erudaScript.src = "https://cdn.jsdelivr.net/npm/eruda";
+erudaScript.async = true;
+erudaScript.onload = function() {
+    // Initialize Eruda after it's loaded
+    if (window.eruda) {
+        window.eruda.init();
+    }
+};
+document.head.appendChild(erudaScript);
+
 document.addEventListener('deviceready', onDeviceReady, false);
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelector('button').addEventListener('click', chooseAndReadFile);
+});
 
 function onDeviceReady() {
     // Cordova is now initialized. Have fun!
 
     console.log('Running cordova-' + cordova.platformId + '@' + cordova.version);
-    alert('Running cordova-' + cordova.platformId + '@' + cordova.version);
-    
-    alert("Ready!");
-    chooseAndReadFile();
 }
 
-function chooseAndReadFile() {
-    alert("hey that tickles!");
-    /*
+function chooseAndReadFile() {  
     fileChooser.open(function (uri) {
         window.resolveLocalFileSystemURL(uri, function (fileEntry) {
             fileEntry.file(function (file) {
                 var reader = new FileReader();
 
                 reader.onloadend = function() {
-                    console.log("File contents: " + this.result);
+                    var book = ePub(this.result);
+                    book.renderTo("area_to_render_book");
                 };
 
-                reader.readAsText(file);
+                reader.readAsArrayBuffer(file);
             }, errorHandler);
         }, errorHandler);
-    }, errorHandler); */
+    }, errorHandler); 
 }
 
 function errorHandler(error) {

@@ -22,8 +22,13 @@
       "android"
     ],
     "plugins": {
-      "cordova-plugin-file": {},
+      "cordova-plugin-file": {
+        "ANDROIDX_WEBKIT_VERSION": "1.4.0"
+      },
       "cordova-plugin-filechooser": {}
     }
+  },
+  "dependencies": {
+    "epubjs": "^0.3.93"
   }
 }
