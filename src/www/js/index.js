@@ -52,6 +52,7 @@ function chooseAndReadFile() {
 
                 reader.onloadend = function() {
                     var book = ePub(this.result);
+                    var rendition = book.renderTo("area", {width: 600, height: 400});
                     book.renderTo("area_to_render_book");
                 };
 
