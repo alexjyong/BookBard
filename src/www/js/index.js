@@ -21,6 +21,7 @@
 // See https://cordova.apache.org/docs/en/latest/cordova/events/events.html#deviceready
 
 // Dynamically load the Eruda script
+var ePub = require('epubjs');
 var erudaScript = document.createElement('script');
 erudaScript.src = "https://cdn.jsdelivr.net/npm/eruda";
 erudaScript.async = true;
