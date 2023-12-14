@@ -36,7 +36,9 @@ document.head.appendChild(erudaScript);
 document.addEventListener('deviceready', onDeviceReady, false);
 
 document.addEventListener('DOMContentLoaded', function() {
-    document.querySelector('button').addEventListener('click', chooseAndReadFile);
+//    document.querySelector('button').addEventListener('click', chooseAndReadFile);
+
+    document.querySelector('button').addEventListener('click', listEPUBFiles);
 });
 
 function onDeviceReady() {
@@ -45,6 +47,7 @@ function onDeviceReady() {
     console.log('Running cordova-' + cordova.platformId + '@' + cordova.version);
 }
 
+/*
 function chooseAndReadFile() {  
     fileChooser.open(function (uri) {
         window.resolveLocalFileSystemURL(uri, function (fileEntry) {
@@ -62,8 +65,28 @@ function chooseAndReadFile() {
         }, errorHandler);
     }, errorHandler); 
 }
+*/
+
+function listEPUBFiles() {
+    window.resolveLocalFileSystemURL(cordova.file.externalRootDirectory, function(directoryEntry) {
+        scanDirectory(directoryEntry);
+    }, errorHandler);
+}
+
+function scanDirectory(directoryEntry) {
+    var directoryReader = directoryEntry.createReader();
+    directoryReader.readEntries(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isDirectory) {
+                scanDirectory(entry); // Recursively scan subdirectories
+            } else if (entry.isFile && entry.name.endsWith('.epub')) {
+                console.log(entry.fullPath); // Log the path of each EPUB file
+            }
+        });
+    }, errorHandler);
+}
 
 function errorHandler(error) {
-    alert("Error: " + error);
+    console.error("Error accessing file system: " + error.code);
 }
 
